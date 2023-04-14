@@ -1,0 +1,44 @@
+import { toast } from 'react-toastify'
+
+export const handleError = (error: Error | any) => {
+  const message = error?.data?.message || error?.message
+  console.error(message)
+  toast(message, {
+    type: 'error',
+    position: 'bottom-left',
+    autoClose: 3500,
+    icon: '🚨',
+    theme: 'dark',
+  })
+}
+
+export const notifyErrorMessage = (message: string) => {
+  toast(message, {
+    type: 'error',
+    position: 'bottom-left',
+    autoClose: 2500,
+    icon: '🚨',
+    theme: 'dark',
+  })
+  console.log(message)
+}
+
+export const handleSuccess = (message: string) => {
+  toast(message, {
+    position: 'top-right',
+    autoClose: 5000,
+    icon: '🪐',
+    theme: 'dark',
+    draggable: false,
+    closeOnClick: false,
+  })
+}
+
+export const handleInfo = (message: string) => {
+  toast(message, {
+    position: 'top-right',
+    autoClose: 5000,
+    icon: '🔔',
+    theme: 'dark',
+  })
+}
