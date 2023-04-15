@@ -12,6 +12,7 @@ import {
 } from '@lens-protocol/react-web'
 import { upload } from '@/common/upload'
 import { Button } from '@ui/Button'
+import { v4 as uuid } from 'uuid'
 import { ImageIcon, LayersIcon, MagicWandIcon } from '@radix-ui/react-icons'
 import { uploadImage } from '@/common/upload'
 import { ILocalFile, useFileSelect } from '@/hooks/useFileSelect'
@@ -19,6 +20,14 @@ import Textarea from '@ui/TextArea'
 import Input from '@ui/Input'
 import Image from 'next/image'
 import { handleError, handleSuccess } from '@/common/notification'
+import { useSigner, useProvider } from 'wagmi'
+import {
+  ContractType,
+  LensGatedSDK,
+  LensEnvironment,
+  ScalarOperator,
+  PublicationMainFocus,
+} from '@lens-protocol/sdk-gated'
 
 interface CreatePostProps {
   open: boolean
@@ -33,6 +42,8 @@ const CreatePost: React.FC<CreatePostProps> = ({ open, setOpen, profile, wallet 
   const [isUploading, setIsUploading] = useState(false)
   const [prompt, setPrompt] = useState<string>('')
   const [collectFee, setCollectFee] = useState<number>(0)
+  const { data: signer } = useSigner()
+  const provider = useProvider()
 
   const { execute: create, error, isPending } = useCreatePost({ publisher: profile, upload })
 
@@ -47,6 +58,45 @@ const CreatePost: React.FC<CreatePostProps> = ({ open, setOpen, profile, wallet 
   const handleCreatePostTest = async () => {
     try {
       setIsUploading(true)
+      const sdk = await LensGatedSDK.create({
+        provider,
+        signer: signer!,
+        env: LensEnvironment.Mumbai,
+      })
+
+      /* define the metadata */
+      const metadata = {
+        version: '2.0.0',
+        content: prompt,
+        description: 'gated prompt',
+        name: profile.handle,
+        external_url: '',
+        metadata_id: uuid(),
+        mainContentFocus: PublicationMainFocus.TextOnly,
+        attributes: [],
+        locale: 'en-US',
+      }
+
+      const { contentURI, encryptedMetadata } = await sdk.gated.encryptMetadata(
+        metadata,
+        profile.id,
+        {
+          collect: {
+            thisPublication: true,
+          },
+        },
+        async function (EncryptedMetadata) {
+          const added = await upload(JSON.stringify(EncryptedMetadata))
+          return added
+        },
+      )
+
+      console.log(contentURI, encryptedMetadata)
+
+      // const { error, decrypted } = await sdk.gated.decryptMetadata(encryptedMetadata!)
+      // console.log('error', error) // in case something went wrong or you dont fullfill the criteria
+      // console.log('decrypted', decrypted) // otherwise, the decrypted MetadataV2 will be here
+
       const imageURL = await uploadImage(candidateFile!)
       console.log('imageURL', imageURL)
 
@@ -77,7 +127,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ open, setOpen, profile, wallet 
 
       const result = await create({
         appId: 'Glimpz' as AppId,
-        content: prompt,
+        content: JSON.stringify(encryptedMetadata),
         contentFocus: ContentFocus.IMAGE,
         locale: 'en',
         media: [
@@ -142,7 +192,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ open, setOpen, profile, wallet 
               Collect Fee
             </div>
             <Input
-              className="w-24 border-2 border-slate-400 rounded-none"
+              className="w-20 border-2 border-slate-400 rounded-none"
               type="number"
               value={collectFee}
               onChange={(e) => {
