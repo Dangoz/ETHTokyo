@@ -1,13 +1,13 @@
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
-import { Button } from '@/components/ui/Button'
+import HomeContainer from '@/components/home/HomeContainer'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   return (
     <>
-      <Button>123</Button>
+      <HomeContainer />
     </>
   )
 }

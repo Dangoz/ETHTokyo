@@ -6,6 +6,7 @@ import { publicProvider } from 'wagmi/providers/public'
 import { LensConfig, development, LensProvider } from '@lens-protocol/react-web'
 import { bindings as wagmiBindings } from '@lens-protocol/wagmi'
 import { handleError } from '@/common/notification'
+import { SearchContextProvider } from '@/store/searchContext'
 
 const { provider, webSocketProvider } = configureChains([polygon, polygonMumbai], [publicProvider()])
 
@@ -22,10 +23,12 @@ const lensConfig: LensConfig = {
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <WagmiConfig client={client}>
-      <LensProvider config={lensConfig} onError={handleError}>
-        <Component {...pageProps} />
-      </LensProvider>
-    </WagmiConfig>
+    <SearchContextProvider>
+      <WagmiConfig client={client}>
+        <LensProvider config={lensConfig} onError={handleError}>
+          <Component {...pageProps} />
+        </LensProvider>
+      </WagmiConfig>
+    </SearchContextProvider>
   )
 }
