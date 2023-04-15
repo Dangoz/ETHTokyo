@@ -11,6 +11,7 @@
   "dependencies": {
     "@bundlr-network/client": "^0.10.5",
     "@lens-protocol/react-web": "^1.0.1",
+    "@lens-protocol/sdk-gated": "^1.2.0",
     "@lens-protocol/wagmi": "^1.0.1",
     "@radix-ui/react-avatar": "^1.0.2",
     "@radix-ui/react-dialog": "^1.0.3",

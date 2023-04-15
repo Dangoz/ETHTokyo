@@ -1,10 +1,9 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Dialog from '@ui/Dialog'
 import {
   ContentFocus,
   ProfileOwnedByMe,
-  DecryptionCriteria,
-  useCreateEncryptedPost,
+  useCreatePost,
   AppId,
   CollectPolicyType,
   WalletData,
@@ -35,7 +34,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ open, setOpen, profile, wallet 
   const [prompt, setPrompt] = useState<string>('')
   const [collectFee, setCollectFee] = useState<number>(0)
 
-  const { execute: create, error, isPending } = useCreateEncryptedPost({ publisher: profile, upload })
+  const { execute: create, error, isPending } = useCreatePost({ publisher: profile, upload })
 
   const openFileSelector = useFileSelect({
     onSelect: (fileList) => {
@@ -76,8 +75,6 @@ const CreatePost: React.FC<CreatePostProps> = ({ open, setOpen, profile, wallet 
               followersOnly: false,
             }
 
-      const decryptionCriteria: DecryptionCriteria = {}
-
       const result = await create({
         appId: 'Glimpz' as AppId,
         content: prompt,
@@ -91,7 +88,6 @@ const CreatePost: React.FC<CreatePostProps> = ({ open, setOpen, profile, wallet 
           },
         ],
         collect,
-        decryptionCriteria,
       })
 
       console.log('result', result)
