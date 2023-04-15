@@ -93,10 +93,6 @@ const CreatePost: React.FC<CreatePostProps> = ({ open, setOpen, profile, wallet 
 
       console.log(contentURI, encryptedMetadata)
 
-      // const { error, decrypted } = await sdk.gated.decryptMetadata(encryptedMetadata!)
-      // console.log('error', error) // in case something went wrong or you dont fullfill the criteria
-      // console.log('decrypted', decrypted) // otherwise, the decrypted MetadataV2 will be here
-
       const imageURL = await uploadImage(candidateFile!)
       console.log('imageURL', imageURL)
 
@@ -189,7 +185,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ open, setOpen, profile, wallet 
           <div className="flex justify-center items-center">
             <div className="flex justify-center items-center gap-2 border-2 border-slate-700 h-10 px-2 border-r-0">
               <LayersIcon className="w-5 h-5 text-white" />
-              Collect Fee
+              Collect
             </div>
             <Input
               className="w-20 border-2 border-slate-400 rounded-none"
