@@ -12,7 +12,6 @@ import {
   useActiveProfile,
 } from '@lens-protocol/react-web'
 import { handleError, notifyErrorMessage, handleSuccess } from '@/common/notification'
-import Dialog from '@ui/Dialog'
 import {
   ContractType,
   LensGatedSDK,
@@ -22,6 +21,7 @@ import {
 } from '@lens-protocol/sdk-gated'
 import { useSigner, useProvider } from 'wagmi'
 import { handleInfo } from '@/common/notification'
+import PromptDisplay from './PromptDisplay'
 
 interface PostCardProps {
   publication: AnyPublication
@@ -172,12 +172,8 @@ const PostCard: React.FC<PostCardProps> = ({ publication }) => {
             width={400}
           />
         </div>
-      </div>
 
-      <div>
-        <Dialog open={showPrompt} setOpen={setShowPrompt} blur="sm">
-          <div className="rounded-md w-28 h-28 overflow-y-scroll bg-red-500">{prompt}</div>
-        </Dialog>
+        <PromptDisplay prompt={prompt} open={showPrompt} setOpen={setShowPrompt} />
       </div>
     </>
   )
