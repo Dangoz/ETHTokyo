@@ -1,4 +1,5 @@
 import '@/styles/globals.css'
+import 'react-toastify/dist/ReactToastify.css'
 import type { AppProps } from 'next/app'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { polygonMumbai, polygon } from 'wagmi/chains'
@@ -7,6 +8,7 @@ import { LensConfig, development, LensProvider } from '@lens-protocol/react-web'
 import { bindings as wagmiBindings } from '@lens-protocol/wagmi'
 import { handleError } from '@/common/notification'
 import { SearchContextProvider } from '@/store/searchContext'
+import { ToastContainer } from 'react-toastify'
 
 const { provider, webSocketProvider } = configureChains([polygon, polygonMumbai], [publicProvider()])
 
@@ -27,6 +29,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <WagmiConfig client={client}>
         <LensProvider config={lensConfig} onError={handleError}>
           <Component {...pageProps} />
+          <ToastContainer />
         </LensProvider>
       </WagmiConfig>
     </SearchContextProvider>

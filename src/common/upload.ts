@@ -5,9 +5,8 @@ import { ImageType } from '@lens-protocol/react-web'
 import { providers, utils } from 'ethers'
 import { ReadableWebToNodeStream } from 'readable-web-to-node-stream'
 import { fetchSigner } from 'wagmi/actions'
-
 import { ILocalFile } from '@/hooks/useFileSelect'
-import { never } from '@/common/never'
+import { never } from './never'
 
 const TOP_UP = '200000000000000000' // 0.2 MATIC
 const MIN_FUNDS = 0.05
@@ -36,17 +35,17 @@ async function getBundlr() {
 }
 
 export async function upload(data: unknown): Promise<string> {
-  const confirm = window.confirm(
-    `In this example we will now upload metadata file via the Bundlr Network.
+  //   const confirm = window.confirm(
+  //     `In this example we will now upload metadata file via the Bundlr Network.
 
-Please make sure your wallet is connected to the Polygon Mumbai testnet.
+  // Please make sure your wallet is connected to the Polygon Mumbai testnet.
 
-You can get some Mumbai MATIC from the Mumbai Faucet: https://mumbaifaucet.com/`,
-  )
+  // You can get some Mumbai MATIC from the Mumbai Faucet: https://mumbaifaucet.com/`,
+  //   );
 
-  if (!confirm) {
-    throw new Error('User cancelled')
-  }
+  // if (!confirm) {
+  //   throw new Error('User cancelled');
+  // }
 
   const bundlr = await getBundlr()
 
@@ -59,17 +58,17 @@ You can get some Mumbai MATIC from the Mumbai Faucet: https://mumbaifaucet.com/`
 }
 
 export async function uploadImage(file: ILocalFile<ImageType>): Promise<string> {
-  const confirm = window.confirm(
-    `In this example we will now upload metadata file via the Bundlr Network.
+  //   const confirm = window.confirm(
+  //     `In this example we will now upload metadata file via the Bundlr Network.
 
-Please make sure your wallet is connected to the Polygon Mumbai testnet.
+  // Please make sure your wallet is connected to the Polygon Mumbai testnet.
 
-You can get some Mumbai MATIC from the Mumbai Faucet: https://mumbaifaucet.com/`,
-  )
+  // You can get some Mumbai MATIC from the Mumbai Faucet: https://mumbaifaucet.com/`,
+  //   );
 
-  if (!confirm) {
-    throw new Error('User cancelled')
-  }
+  // if (!confirm) {
+  //   throw new Error('User cancelled');
+  // }
 
   const bundlr = await getBundlr()
 

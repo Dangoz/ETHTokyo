@@ -62,7 +62,14 @@ const ConnectionStatus = () => {
                 }}
               />
             </ToolTip>
-            {profile && <CreatePost open={showCreatePostDialog} setOpen={setShowCreatePostDialog} profile={profile} />}
+            {profile && (
+              <CreatePost
+                open={showCreatePostDialog}
+                setOpen={setShowCreatePostDialog}
+                profile={profile}
+                wallet={wallet}
+              />
+            )}
           </div>
           <ToolTip message={profile ? profile.handle : wallet.address} delayDuration={100}>
             <Avatar>
